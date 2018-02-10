@@ -1,7 +1,7 @@
-Binaries
-DerivedDataCache
-Intermediate
-Saved
+CoOpGame/Binaries
+CoOpGame/DerivedDataCache
+CoOpGame/Intermediate
+CoOpGame/Saved
 .vscode
 .vs
 *.VC.db
