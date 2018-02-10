@@ -2,6 +2,7 @@ CoOpGame/Binaries
 CoOpGame/DerivedDataCache
 CoOpGame/Intermediate
 CoOpGame/Saved
+CoOpGame/enc_temp_folder
 .vscode
 .vs
 *.VC.db
