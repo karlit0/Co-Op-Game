@@ -22,6 +22,7 @@ ASCharacter::ASCharacter()
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanJump = true;
 
+	bWantsToZoom = false;
 	ZoomedFOW = 65.0f;
 	ZoomInterpSpeed = 20.0f;
 }
