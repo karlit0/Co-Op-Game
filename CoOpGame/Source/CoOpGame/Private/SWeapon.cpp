@@ -50,7 +50,7 @@ void ASWeapon::Fire()
 		FVector tracerEndPoint = traceEnd;
 
 		FHitResult hit;
-		if (GetWorld()->LineTraceSingleByChannel(hit, eyeLocation, traceEnd, ECC_Visibility, queryParams))
+		if (GetWorld()->LineTraceSingleByChannel(hit, eyeLocation, traceEnd, COLLISION_WEAPON, queryParams))
 		{
 			// Blocking hit! Process damage
 			AActor* hitActor = hit.GetActor();
