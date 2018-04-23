@@ -95,5 +95,14 @@ protected:
 	void OnCheckNearbyBots();
 
 	// the power boost of the bot, affects damaged caused to enemies and color of the bot (range: 1 to 4)
+	UPROPERTY(ReplicatedUsing=OnRep_PowerLevel)
 	int32 PowerLevel;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TrackerBot")
+	int32 MaxPowerLevel;
+
+	UFUNCTION()
+	void OnRep_PowerLevel();
+
+	void UpdateMaterialForPowerLevel();
 };

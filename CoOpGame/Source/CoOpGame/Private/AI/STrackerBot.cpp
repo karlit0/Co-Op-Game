@@ -11,6 +11,7 @@
 #include "SCharacter.h"
 #include "Components/SphereComponent.h"
 #include "Sound/SoundCue.h"
+#include "UnrealNetwork.h"
 
 // Sets default values
 ASTrackerBot::ASTrackerBot()
@@ -44,6 +45,8 @@ ASTrackerBot::ASTrackerBot()
 	bStartedSelfDestruction = false;
 
 	SelfDamageInterval = 0.25f;
+
+	MaxPowerLevel = 4;
 }
 
 // Called when the game starts or when spawned
@@ -91,7 +94,7 @@ FVector ASTrackerBot::GetNextPathPoint()
 
 	UNavigationPath* NavPath = UNavigationSystem::FindPathToActorSynchronously(this, GetActorLocation(), PlayerPawn);
 
-	if (NavPath->PathPoints.Num() > 1)
+	if (NavPath && NavPath->PathPoints.Num() > 1)
 	{
 		// Return next point in the path
 		return NavPath->PathPoints[1];
@@ -229,13 +232,22 @@ void ASTrackerBot::OnCheckNearbyBots()
 		}
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("%s detected %d other actors"), *GetName(), Overlaps.Num());
-
-	const int32 MaxPowerLevel = 4;
-
 	// Clamp between min=0 and max=4
 	PowerLevel = FMath::Clamp(NrOfBots, 0, MaxPowerLevel);
 
+	UpdateMaterialForPowerLevel();
+
+	// Draw on the bot location
+	DrawDebugString(GetWorld(), FVector(0, 0, 0), FString::FromInt(PowerLevel), this, FColor::White, 1.0f, true);
+}
+
+void ASTrackerBot::OnRep_PowerLevel()
+{	
+	UpdateMaterialForPowerLevel();
+}
+
+void ASTrackerBot::UpdateMaterialForPowerLevel()
+{
 	// Update the material color
 	if (MatInst == nullptr)
 	{
@@ -252,7 +264,11 @@ void ASTrackerBot::OnCheckNearbyBots()
 
 		MatInst->SetScalarParameterValue("PowerLevelAlpha", Alpha);
 	}
+}
 
-	// Draw on the bot location
-	DrawDebugString(GetWorld(), FVector(0, 0, 0), FString::FromInt(PowerLevel), this, FColor::White, 1.0f, true);
+void ASTrackerBot::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ASTrackerBot, PowerLevel);
 }
