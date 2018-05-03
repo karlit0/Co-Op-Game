@@ -19,6 +19,8 @@ ASPickupActor::ASPickupActor()
 	DecalComp->SetupAttachment(RootComponent);
 
 	CooldownDuration = 10.0f;
+
+	SetReplicates(true);
 }
 
 // Called when the game starts or when spawned
@@ -26,7 +28,10 @@ void ASPickupActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	Respawn();
+	if (Role == ROLE_Authority)
+	{
+		Respawn();
+	}
 }
 
 void ASPickupActor::Respawn()
@@ -47,7 +52,7 @@ void ASPickupActor::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
 
-	if (PowerUpInstance)
+	if (Role == ROLE_Authority && PowerUpInstance)
 	{
 		PowerUpInstance->ActivatePowerup();
 		PowerUpInstance = nullptr;
