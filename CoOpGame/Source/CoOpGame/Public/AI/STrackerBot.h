@@ -89,6 +89,10 @@ public:
 	
 protected:
 
+	FTimerHandle TimerHandle_RefreshPath;
+
+	void RefreshPath();
+
 	// CHALLENGE CODE
 
 	// Find nearby enemies and grow in 'power level' based on the amount
